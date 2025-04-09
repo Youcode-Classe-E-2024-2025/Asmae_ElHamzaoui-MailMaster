@@ -15,4 +15,28 @@ class Campaign extends Model
         'status',
         'scheduled_at',
     ];
+
+    protected $casts = [
+        'scheduled_at' => 'datetime',
+    ];
+
+    // Une campagne est liée à un utilisateur
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Une campagne utilise une newsletter
+    public function newsletter()
+    {
+        return $this->belongsTo(Newsletter::class);
+    }
+
+    // Une campagne est envoyée à plusieurs abonnés
+    public function subscribers()
+    {
+        return $this->belongsToMany(Subscriber::class)
+                    ->withPivot('opened')
+                    ->withTimestamps();
+    }
 }
