@@ -28,6 +28,14 @@ Route::post('/register', 'AuthController@register');
 Route::post('/login', 'AuthController@login');          
 Route::post('/logout', 'AuthController@logout')->middleware('auth:sanctum');  
 
+// Routes pour les abonnés 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/subscribers', 'SubscriberController@store');
+    Route::get('/subscribers', 'SubscriberController@index');
+    Route::get('/subscribers/{id}', 'SubscriberController@show');
+    Route::put('/subscribers/{id}', 'SubscriberController@update');
+    Route::delete('/subscribers/{id}', 'SubscriberController@destroy');
+});
 
 
 
