@@ -11,4 +11,13 @@ class Subscriber extends Model
         'email',
         'name',
     ];
+
+
+    // Un abonné peut recevoir plusieurs campagnes
+    public function campaigns()
+    {
+        return $this->belongsToMany(Campaign::class)
+                    ->withPivot('opened')
+                    ->withTimestamps();
+    }
 }
