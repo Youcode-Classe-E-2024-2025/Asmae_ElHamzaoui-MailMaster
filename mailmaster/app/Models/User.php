@@ -42,4 +42,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // Un utilisateur peut créer plusieurs campagnes
+    public function campaigns()
+    {
+        return $this->hasMany(Campaign::class);
+    }
 }
