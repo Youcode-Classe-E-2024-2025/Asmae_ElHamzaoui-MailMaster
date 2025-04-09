@@ -3,61 +3,34 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CampaignController;
-use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\SubscriberController;
+use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\CampaignController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+Route::post('/register', [AuthController::class, 'register']); 
+Route::post('/login', [AuthController::class, 'login']);        
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');  
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {  
+    
+    // Abonnés
+    Route::post('/subscribers', [SubscriberController::class, 'store']);
+    Route::get('/subscribers', [SubscriberController::class, 'index']);
+    Route::get('/subscribers/{id}', [SubscriberController::class, 'show']);
+    Route::put('/subscribers/{id}', [SubscriberController::class, 'update']);
+    Route::delete('/subscribers/{id}', [SubscriberController::class, 'destroy']);
+    
+    // Newsletters
+    Route::post('/newsletters', [NewsletterController::class, 'store']);
+    Route::get('/newsletters', [NewsletterController::class, 'index']);
+    Route::get('/newsletters/{id}', [NewsletterController::class, 'show']);
+    Route::put('/newsletters/{id}', [NewsletterController::class, 'update']);
+    Route::delete('/newsletters/{id}', [NewsletterController::class, 'destroy']);
+    
+    // Campagnes
+    Route::post('/campaigns', [CampaignController::class, 'store']);
+    Route::get('/campaigns', [CampaignController::class, 'index']);
+    Route::get('/campaigns/{id}', [CampaignController::class, 'show']);
+    Route::put('/campaigns/{id}', [CampaignController::class, 'update']);
+    Route::delete('/campaigns/{id}', [CampaignController::class, 'destroy']);
 });
-
-
-// Routes d'authentification
-Route::post('/register', 'AuthController@register');    
-Route::post('/login', 'AuthController@login');          
-Route::post('/logout', 'AuthController@logout')->middleware('auth:sanctum');  
-
-// Routes pour les abonnés 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/subscribers', 'SubscriberController@store');
-    Route::get('/subscribers', 'SubscriberController@index');
-    Route::get('/subscribers/{id}', 'SubscriberController@show');
-    Route::put('/subscribers/{id}', 'SubscriberController@update');
-    Route::delete('/subscribers/{id}', 'SubscriberController@destroy');
-});
-
-// Routes pour les newsletters 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/newsletters', 'NewsletterController@store');
-    Route::get('/newsletters', 'NewsletterController@index');
-    Route::get('/newsletters/{id}', 'NewsletterController@show');
-    Route::put('/newsletters/{id}', 'NewsletterController@update');
-    Route::delete('/newsletters/{id}', 'NewsletterController@destroy');
-});
-
-// Routes pour les campagnes 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/campaigns', 'CampaignController@store');
-    Route::get('/campaigns', 'CampaignController@index');
-    Route::get('/campaigns/{id}', 'CampaignController@show');
-    Route::put('/campaigns/{id}', 'CampaignController@update');
-    Route::delete('/campaigns/{id}', 'CampaignController@destroy');
-});
-
-
-
-
-
-
-
