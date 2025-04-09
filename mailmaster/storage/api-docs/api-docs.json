@@ -1,0 +1,788 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "MailMaster API",
+        "description": "API de gestion de campagnes de newsletters",
+        "contact": {
+            "email": "support@mailmaster.local"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "Serveur local"
+        }
+    ],
+    "paths": {
+        "/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register a new user",
+                "operationId": "0903f2e0df1a8857bee538fc055417f0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "role"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "example": "client"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully"
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User login",
+                "operationId": "2dd578ff7aba2721293dac66833b27d1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User logout",
+                "operationId": "68a6108af04af5e3bc1ea68a6c6f1299",
+                "responses": {
+                    "200": {
+                        "description": "Logout successful"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/campaigns": {
+            "get": {
+                "tags": [
+                    "Campaigns"
+                ],
+                "summary": "Liste des campagnes",
+                "description": "Récupère toutes les campagnes existantes",
+                "operationId": "d2a1aecdf4c5fee4d3d5f820b5b2a250",
+                "responses": {
+                    "200": {
+                        "description": "Liste récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Campaign"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Campaigns"
+                ],
+                "summary": "Créer une nouvelle campagne",
+                "description": "Crée une nouvelle campagne en associant une newsletter et une date d'envoi programmée",
+                "operationId": "a0bb4df932d4174de20c996bfa6f3783",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "newsletter_id",
+                                    "scheduled_at"
+                                ],
+                                "properties": {
+                                    "newsletter_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "scheduled_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-04-10T12:00:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Campagne créée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Campaign"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/campaigns/{id}": {
+            "get": {
+                "tags": [
+                    "Campaigns"
+                ],
+                "summary": "Voir une campagne",
+                "description": "Récupère les détails d'une campagne spécifique",
+                "operationId": "2932baff0a96253f970c1d3696fa5034",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la campagne",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails de la campagne récupérés avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Campaign"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Campaigns"
+                ],
+                "summary": "Mettre à jour une campagne",
+                "description": "Met à jour les informations d'une campagne existante",
+                "operationId": "0d9fdd982821a4e54848c1e4ca7e2918",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la campagne à mettre à jour",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "newsletter_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "scheduled_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-04-15T12:00:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Campagne mise à jour avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Campaign"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Campaigns"
+                ],
+                "summary": "Supprimer une campagne",
+                "description": "Supprime une campagne en utilisant son ID",
+                "operationId": "48be2f3c96f59a0c784245bac7ea50dd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la campagne à supprimer",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Campagne supprimée avec succès"
+                    }
+                }
+            }
+        },
+        "/newsletters": {
+            "get": {
+                "tags": [
+                    "Newsletters"
+                ],
+                "summary": "Liste des newsletters",
+                "description": "Récupère toutes les newsletters existantes",
+                "operationId": "897ed8f949066f311e7ede82d7de94b5",
+                "responses": {
+                    "200": {
+                        "description": "Liste récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Newsletter"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Newsletters"
+                ],
+                "summary": "Créer une nouvelle newsletter",
+                "description": "Crée une nouvelle newsletter avec un titre et un contenu",
+                "operationId": "6c53b6e491b4bdfd3ce4b4ac87eb1a5b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "content"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Nouvelle Newsletter"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "Contenu de la newsletter."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Newsletter créée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Newsletter"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/newsletters/{id}": {
+            "get": {
+                "tags": [
+                    "Newsletters"
+                ],
+                "summary": "Voir une newsletter",
+                "description": "Récupère les détails d'une newsletter spécifique",
+                "operationId": "19fedd63d82c08256ef7109b9e539d9c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la newsletter",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails de la newsletter récupérés avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Newsletter"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Newsletters"
+                ],
+                "summary": "Mettre à jour une newsletter",
+                "description": "Met à jour les informations d'une newsletter existante",
+                "operationId": "24d3ae87f6dbcb5f00db46503939e924",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la newsletter à mettre à jour",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Nouvelle version de la newsletter"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "Nouveau contenu mis à jour."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Newsletter mise à jour avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Newsletter"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Newsletters"
+                ],
+                "summary": "Supprimer une newsletter",
+                "description": "Supprime une newsletter en utilisant son ID",
+                "operationId": "d70bf70517ad67fb44b6794474593b67",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la newsletter à supprimer",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Newsletter supprimée avec succès"
+                    }
+                }
+            }
+        },
+        "/subscribers": {
+            "get": {
+                "tags": [
+                    "Subscribers"
+                ],
+                "summary": "Liste des abonnés",
+                "description": "Récupère tous les abonnés",
+                "operationId": "0ffcf85ffd5e76aae37d1d562769b8f6",
+                "responses": {
+                    "200": {
+                        "description": "Liste récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Subscriber"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Subscribers"
+                ],
+                "summary": "Créer un nouvel abonné",
+                "description": "Crée un nouvel abonné avec un email et un nom",
+                "operationId": "7a6bb14e6793922b9388f0d82c459e5d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "subscriber@example.com"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Abonné créé avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscriber"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/subscribers/{id}": {
+            "get": {
+                "tags": [
+                    "Subscribers"
+                ],
+                "summary": "Voir un abonné",
+                "description": "Récupère les détails d'un abonné spécifique",
+                "operationId": "f6d2d5b4825cb421736ebc3bc846fda8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'abonné",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails de l'abonné récupérés avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscriber"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Subscribers"
+                ],
+                "summary": "Mettre à jour un abonné",
+                "description": "Met à jour les informations d'un abonné existant",
+                "operationId": "a151319efde5cb519d46c4266e468598",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'abonné à mettre à jour",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "newsubscriber@example.com"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Jane Doe"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Abonné mis à jour avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscriber"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Subscribers"
+                ],
+                "summary": "Supprimer un abonné",
+                "description": "Supprime un abonné en utilisant son ID",
+                "operationId": "7d5f3ca3bfe0f65701c708aa687686ce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'abonné à supprimer",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Abonné supprimé avec succès"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Newsletter": {
+                "required": [
+                    "title",
+                    "content"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The unique identifier for the newsletter",
+                        "type": "integer"
+                    },
+                    "title": {
+                        "description": "The title of the newsletter",
+                        "type": "string"
+                    },
+                    "content": {
+                        "description": "The content of the newsletter",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the newsletter was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp when the newsletter was last updated",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Subscriber": {
+                "required": [
+                    "email"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The unique identifier for the subscriber",
+                        "type": "integer"
+                    },
+                    "email": {
+                        "description": "The email of the subscriber",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "The name of the subscriber",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the subscriber was added",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp when the subscriber was last updated",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Campaign": {
+                "required": [
+                    "newsletter_id",
+                    "scheduled_at"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The unique identifier for the campaign",
+                        "type": "integer"
+                    },
+                    "newsletter_id": {
+                        "description": "The ID of the associated newsletter",
+                        "type": "integer"
+                    },
+                    "scheduled_at": {
+                        "description": "The scheduled time for the campaign",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the campaign was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp when the campaign was last updated",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "API endpoints for user authentication"
+        },
+        {
+            "name": "Campaigns",
+            "description": "Gestion des campagnes"
+        },
+        {
+            "name": "Newsletters",
+            "description": "Gestion des newsletters"
+        },
+        {
+            "name": "Subscribers",
+            "description": "Gestion des abonnés"
+        }
+    ]
+}
