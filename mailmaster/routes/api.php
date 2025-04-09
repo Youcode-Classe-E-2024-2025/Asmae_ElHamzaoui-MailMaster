@@ -46,6 +46,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/newsletters/{id}', 'NewsletterController@destroy');
 });
 
+// Routes pour les campagnes 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/campaigns', 'CampaignController@store');
+    Route::get('/campaigns', 'CampaignController@index');
+    Route::get('/campaigns/{id}', 'CampaignController@show');
+    Route::put('/campaigns/{id}', 'CampaignController@update');
+    Route::delete('/campaigns/{id}', 'CampaignController@destroy');
+});
+
 
 
 
