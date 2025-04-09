@@ -13,4 +13,10 @@ class Newsletter extends Model
         'title',
         'content',
     ];
+
+     // Une newsletter peut être utilisée dans plusieurs campagnes
+     public function campaigns()
+     {
+         return $this->hasMany(Campaign::class);
+     }
 }
