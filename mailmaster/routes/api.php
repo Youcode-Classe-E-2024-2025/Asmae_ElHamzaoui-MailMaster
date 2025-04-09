@@ -37,6 +37,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/subscribers/{id}', 'SubscriberController@destroy');
 });
 
+// Routes pour les newsletters 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/newsletters', 'NewsletterController@store');
+    Route::get('/newsletters', 'NewsletterController@index');
+    Route::get('/newsletters/{id}', 'NewsletterController@show');
+    Route::put('/newsletters/{id}', 'NewsletterController@update');
+    Route::delete('/newsletters/{id}', 'NewsletterController@destroy');
+});
+
 
 
 
