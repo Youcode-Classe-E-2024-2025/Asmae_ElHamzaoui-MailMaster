@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Services\SubscriberService;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Tag(
  *     name="Subscribers",
- *     description="Gestion des abonnés"
+ *     description="API Endpoints for subscriber management"
  * )
  */
 class SubscriberController extends Controller
@@ -25,16 +25,9 @@ class SubscriberController extends Controller
      * @OA\Get(
      *     path="/subscribers",
      *     tags={"Subscribers"},
-     *     summary="Liste des abonnés",
-     *     description="Récupère tous les abonnés",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Liste récupérée avec succès",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Subscriber")
-     *         )
-     *     )
+     *     summary="Get all subscribers",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response=200, description="List of all subscribers")
      * )
      */
     public function index()
@@ -46,8 +39,8 @@ class SubscriberController extends Controller
      * @OA\Post(
      *     path="/subscribers",
      *     tags={"Subscribers"},
-     *     summary="Créer un nouvel abonné",
-     *     description="Crée un nouvel abonné avec un email et un nom",
+     *     summary="Create a new subscriber",
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -56,11 +49,7 @@ class SubscriberController extends Controller
      *             @OA\Property(property="name", type="string", example="John Doe")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Abonné créé avec succès",
-     *         @OA\JsonContent(ref="#/components/schemas/Subscriber")
-     *     )
+     *     @OA\Response(response=201, description="Subscriber successfully created")
      * )
      */
     public function store(Request $request)
@@ -75,22 +64,17 @@ class SubscriberController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/subscribers/{id}",
+     *     path="/subscribers/{subscriber}",
      *     tags={"Subscribers"},
-     *     summary="Voir un abonné",
-     *     description="Récupère les détails d'un abonné spécifique",
+     *     summary="Get a specific subscriber",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="subscriber",
      *         in="path",
      *         required=true,
-     *         description="ID de l'abonné",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Détails de l'abonné récupérés avec succès",
-     *         @OA\JsonContent(ref="#/components/schemas/Subscriber")
-     *     )
+     *     @OA\Response(response=200, description="Subscriber details")
      * )
      */
     public function show($id)
@@ -100,15 +84,14 @@ class SubscriberController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/subscribers/{id}",
+     *     path="/subscribers/{subscriber}",
      *     tags={"Subscribers"},
-     *     summary="Mettre à jour un abonné",
-     *     description="Met à jour les informations d'un abonné existant",
+     *     summary="Update a specific subscriber",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="subscriber",
      *         in="path",
      *         required=true,
-     *         description="ID de l'abonné à mettre à jour",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\RequestBody(
@@ -118,11 +101,7 @@ class SubscriberController extends Controller
      *             @OA\Property(property="name", type="string", example="Jane Doe")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Abonné mis à jour avec succès",
-     *         @OA\JsonContent(ref="#/components/schemas/Subscriber")
-     *     )
+     *     @OA\Response(response=200, description="Subscriber successfully updated")
      * )
      */
     public function update(Request $request, $id)
@@ -137,21 +116,17 @@ class SubscriberController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/subscribers/{id}",
+     *     path="/subscribers/{subscriber}",
      *     tags={"Subscribers"},
-     *     summary="Supprimer un abonné",
-     *     description="Supprime un abonné en utilisant son ID",
+     *     summary="Delete a specific subscriber",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="subscriber",
      *         in="path",
      *         required=true,
-     *         description="ID de l'abonné à supprimer",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Abonné supprimé avec succès"
-     *     )
+     *     @OA\Response(response=200, description="Subscriber successfully deleted")
      * )
      */
     public function destroy($id)
