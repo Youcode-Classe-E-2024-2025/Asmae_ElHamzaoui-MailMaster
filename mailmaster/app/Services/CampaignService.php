@@ -1,41 +1,57 @@
 <?php
+
 namespace App\Services;
 
-use App\Repositories\CampaignRepository;
+use App\Models\Campaign;
+use Illuminate\Support\Facades\Auth;
 
 class CampaignService
 {
-    protected $campaignRepository;
-
-    public function __construct(CampaignRepository $campaignRepository)
-    {
-        $this->campaignRepository = $campaignRepository;
-    }
-
-    public function getAll()
-    {
-        return $this->campaignRepository->all();
-    }
-
-    public function getById($id)
-    {
-        return $this->campaignRepository->find($id);
-    }
-
+    /**
+     * Crée une nouvelle campagne
+     */
     public function create(array $data)
     {
-        return $this->campaignRepository->create($data);
+        // Ajouter l'ID de l'utilisateur connecté
+        $data['user_id'] = Auth::id();
+
+        // Crée la campagne et la retourne
+        return Campaign::create($data);
     }
 
+    /**
+     * Récupère toutes les campagnes
+     */
+    public function getAll()
+    {
+        return Campaign::all();
+    }
+
+    /**
+     * Récupère une campagne par ID
+     */
+    public function getById($id)
+    {
+        return Campaign::findOrFail($id);
+    }
+
+    /**
+     * Met à jour une campagne
+     */
     public function update($id, array $data)
     {
-        $campaign = $this->campaignRepository->find($id);
-        return $this->campaignRepository->update($campaign, $data);
+        $campaign = Campaign::findOrFail($id);
+        $campaign->update($data);
+        return $campaign;
     }
 
+    /**
+     * Supprime une campagne
+     */
     public function delete($id)
     {
-        $campaign = $this->campaignRepository->find($id);
-        return $this->campaignRepository->delete($campaign);
+        $campaign = Campaign::findOrFail($id);
+        $campaign->delete();
+        return response()->json(['message' => 'Campaign deleted successfully']);
     }
 }

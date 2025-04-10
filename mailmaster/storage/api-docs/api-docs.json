@@ -141,31 +141,24 @@
                 "tags": [
                     "Campaigns"
                 ],
-                "summary": "Liste des campagnes",
-                "description": "Récupère toutes les campagnes existantes",
+                "summary": "Get all campaigns",
                 "operationId": "d2a1aecdf4c5fee4d3d5f820b5b2a250",
                 "responses": {
                     "200": {
-                        "description": "Liste récupérée avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Campaign"
-                                    }
-                                }
-                            }
-                        }
+                        "description": "List of all campaigns"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
                     "Campaigns"
                 ],
-                "summary": "Créer une nouvelle campagne",
-                "description": "Crée une nouvelle campagne en associant une newsletter et une date d'envoi programmée",
+                "summary": "Create a new campaign",
                 "operationId": "a0bb4df932d4174de20c996bfa6f3783",
                 "requestBody": {
                     "required": true,
@@ -194,16 +187,14 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Campagne créée avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Campaign"
-                                }
-                            }
-                        }
+                        "description": "Campaign successfully created"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/campaigns/{id}": {
@@ -211,14 +202,12 @@
                 "tags": [
                     "Campaigns"
                 ],
-                "summary": "Voir une campagne",
-                "description": "Récupère les détails d'une campagne spécifique",
+                "summary": "Get a specific campaign",
                 "operationId": "2932baff0a96253f970c1d3696fa5034",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID de la campagne",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -227,29 +216,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Détails de la campagne récupérés avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Campaign"
-                                }
-                            }
-                        }
+                        "description": "Campaign details"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
                     "Campaigns"
                 ],
-                "summary": "Mettre à jour une campagne",
-                "description": "Met à jour les informations d'une campagne existante",
+                "summary": "Update a specific campaign",
                 "operationId": "0d9fdd982821a4e54848c1e4ca7e2918",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID de la campagne à mettre à jour",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -257,19 +242,19 @@
                     }
                 ],
                 "requestBody": {
-                    "required": false,
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
                                     "newsletter_id": {
                                         "type": "integer",
-                                        "example": 1
+                                        "example": 2
                                     },
                                     "scheduled_at": {
                                         "type": "string",
                                         "format": "date-time",
-                                        "example": "2025-04-15T12:00:00"
+                                        "example": "2025-04-15T09:30:00"
                                     }
                                 },
                                 "type": "object"
@@ -279,29 +264,25 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Campagne mise à jour avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Campaign"
-                                }
-                            }
-                        }
+                        "description": "Campaign successfully updated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
                     "Campaigns"
                 ],
-                "summary": "Supprimer une campagne",
-                "description": "Supprime une campagne en utilisant son ID",
+                "summary": "Delete a specific campaign",
                 "operationId": "48be2f3c96f59a0c784245bac7ea50dd",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID de la campagne à supprimer",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -310,9 +291,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Campagne supprimée avec succès"
+                        "description": "Campaign successfully deleted"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/newsletters": {
@@ -320,12 +306,11 @@
                 "tags": [
                     "Newsletters"
                 ],
-                "summary": "Liste des newsletters",
-                "description": "Récupère toutes les newsletters existantes",
+                "summary": "Get all newsletters",
                 "operationId": "897ed8f949066f311e7ede82d7de94b5",
                 "responses": {
                     "200": {
-                        "description": "Liste récupérée avec succès",
+                        "description": "List of all newsletters",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -337,14 +322,18 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
                     "Newsletters"
                 ],
-                "summary": "Créer une nouvelle newsletter",
-                "description": "Crée une nouvelle newsletter avec un titre et un contenu",
+                "summary": "Create a new newsletter",
                 "operationId": "6c53b6e491b4bdfd3ce4b4ac87eb1a5b",
                 "requestBody": {
                     "required": true,
@@ -372,7 +361,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Newsletter créée avec succès",
+                        "description": "Newsletter successfully created",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -381,7 +370,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/newsletters/{id}": {
@@ -389,14 +383,12 @@
                 "tags": [
                     "Newsletters"
                 ],
-                "summary": "Voir une newsletter",
-                "description": "Récupère les détails d'une newsletter spécifique",
+                "summary": "Get a specific newsletter",
                 "operationId": "19fedd63d82c08256ef7109b9e539d9c",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID de la newsletter",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -405,7 +397,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Détails de la newsletter récupérés avec succès",
+                        "description": "Newsletter details",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -414,20 +406,23 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
                     "Newsletters"
                 ],
-                "summary": "Mettre à jour une newsletter",
-                "description": "Met à jour les informations d'une newsletter existante",
+                "summary": "Update a newsletter",
                 "operationId": "24d3ae87f6dbcb5f00db46503939e924",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID de la newsletter à mettre à jour",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -435,18 +430,18 @@
                     }
                 ],
                 "requestBody": {
-                    "required": false,
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
                                     "title": {
                                         "type": "string",
-                                        "example": "Nouvelle version de la newsletter"
+                                        "example": "Titre mis à jour"
                                     },
                                     "content": {
                                         "type": "string",
-                                        "example": "Nouveau contenu mis à jour."
+                                        "example": "Contenu mis à jour de la newsletter."
                                     }
                                 },
                                 "type": "object"
@@ -456,7 +451,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Newsletter mise à jour avec succès",
+                        "description": "Newsletter successfully updated",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -465,20 +460,23 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
                     "Newsletters"
                 ],
-                "summary": "Supprimer une newsletter",
-                "description": "Supprime une newsletter en utilisant son ID",
+                "summary": "Delete a newsletter",
                 "operationId": "d70bf70517ad67fb44b6794474593b67",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID de la newsletter à supprimer",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -487,9 +485,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Newsletter supprimée avec succès"
+                        "description": "Newsletter successfully deleted"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/subscribers": {
@@ -497,31 +500,24 @@
                 "tags": [
                     "Subscribers"
                 ],
-                "summary": "Liste des abonnés",
-                "description": "Récupère tous les abonnés",
+                "summary": "Get all subscribers",
                 "operationId": "0ffcf85ffd5e76aae37d1d562769b8f6",
                 "responses": {
                     "200": {
-                        "description": "Liste récupérée avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Subscriber"
-                                    }
-                                }
-                            }
-                        }
+                        "description": "List of all subscribers"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
                     "Subscribers"
                 ],
-                "summary": "Créer un nouvel abonné",
-                "description": "Crée un nouvel abonné avec un email et un nom",
+                "summary": "Create a new subscriber",
                 "operationId": "7a6bb14e6793922b9388f0d82c459e5d",
                 "requestBody": {
                     "required": true,
@@ -549,31 +545,27 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Abonné créé avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Subscriber"
-                                }
-                            }
-                        }
+                        "description": "Subscriber successfully created"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/subscribers/{id}": {
+        "/subscribers/{subscriber}": {
             "get": {
                 "tags": [
                     "Subscribers"
                 ],
-                "summary": "Voir un abonné",
-                "description": "Récupère les détails d'un abonné spécifique",
-                "operationId": "f6d2d5b4825cb421736ebc3bc846fda8",
+                "summary": "Get a specific subscriber",
+                "operationId": "8c921f53586b51a66581cab704d4df9f",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "subscriber",
                         "in": "path",
-                        "description": "ID de l'abonné",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -582,29 +574,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Détails de l'abonné récupérés avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Subscriber"
-                                }
-                            }
-                        }
+                        "description": "Subscriber details"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
                     "Subscribers"
                 ],
-                "summary": "Mettre à jour un abonné",
-                "description": "Met à jour les informations d'un abonné existant",
-                "operationId": "a151319efde5cb519d46c4266e468598",
+                "summary": "Update a specific subscriber",
+                "operationId": "cdbf4a64550cfc4a032e3cf706b132f0",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "subscriber",
                         "in": "path",
-                        "description": "ID de l'abonné à mettre à jour",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -634,29 +622,25 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Abonné mis à jour avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Subscriber"
-                                }
-                            }
-                        }
+                        "description": "Subscriber successfully updated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
                     "Subscribers"
                 ],
-                "summary": "Supprimer un abonné",
-                "description": "Supprime un abonné en utilisant son ID",
-                "operationId": "7d5f3ca3bfe0f65701c708aa687686ce",
+                "summary": "Delete a specific subscriber",
+                "operationId": "1b4b0ade0373f1d90ba396feab664ccf",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "subscriber",
                         "in": "path",
-                        "description": "ID de l'abonné à supprimer",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -665,9 +649,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Abonné supprimé avec succès"
+                        "description": "Subscriber successfully deleted"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
@@ -813,11 +802,11 @@
         },
         {
             "name": "Subscribers",
-            "description": "Gestion des abonnés"
+            "description": "API Endpoints for subscriber management"
         },
         {
             "name": "Newsletters",
-            "description": "Gestion des newsletters"
+            "description": "API Endpoints for newsletter management"
         }
     ]
 }
