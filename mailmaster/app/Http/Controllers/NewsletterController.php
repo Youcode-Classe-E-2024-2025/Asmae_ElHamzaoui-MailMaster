@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Services\NewsletterService;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Tag(
  *     name="Newsletters",
- *     description="Gestion des newsletters"
+ *     description="API Endpoints for newsletter management"
  * )
  */
 class NewsletterController extends Controller
@@ -25,11 +26,11 @@ class NewsletterController extends Controller
      * @OA\Get(
      *     path="/newsletters",
      *     tags={"Newsletters"},
-     *     summary="Liste des newsletters",
-     *     description="Récupère toutes les newsletters existantes",
+     *     summary="Get all newsletters",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Liste récupérée avec succès",
+     *         description="List of all newsletters",
      *         @OA\JsonContent(
      *             type="array",
      *             @OA\Items(ref="#/components/schemas/Newsletter")
@@ -46,8 +47,8 @@ class NewsletterController extends Controller
      * @OA\Post(
      *     path="/newsletters",
      *     tags={"Newsletters"},
-     *     summary="Créer une nouvelle newsletter",
-     *     description="Crée une nouvelle newsletter avec un titre et un contenu",
+     *     summary="Create a new newsletter",
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -58,7 +59,7 @@ class NewsletterController extends Controller
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Newsletter créée avec succès",
+     *         description="Newsletter successfully created",
      *         @OA\JsonContent(ref="#/components/schemas/Newsletter")
      *     )
      * )
@@ -77,18 +78,17 @@ class NewsletterController extends Controller
      * @OA\Get(
      *     path="/newsletters/{id}",
      *     tags={"Newsletters"},
-     *     summary="Voir une newsletter",
-     *     description="Récupère les détails d'une newsletter spécifique",
+     *     summary="Get a specific newsletter",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID de la newsletter",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Détails de la newsletter récupérés avec succès",
+     *         description="Newsletter details",
      *         @OA\JsonContent(ref="#/components/schemas/Newsletter")
      *     )
      * )
@@ -102,25 +102,24 @@ class NewsletterController extends Controller
      * @OA\Put(
      *     path="/newsletters/{id}",
      *     tags={"Newsletters"},
-     *     summary="Mettre à jour une newsletter",
-     *     description="Met à jour les informations d'une newsletter existante",
+     *     summary="Update a newsletter",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID de la newsletter à mettre à jour",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\RequestBody(
-     *         required=false,
+     *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="title", type="string", example="Nouvelle version de la newsletter"),
-     *             @OA\Property(property="content", type="string", example="Nouveau contenu mis à jour.")
+     *             @OA\Property(property="title", type="string", example="Titre mis à jour"),
+     *             @OA\Property(property="content", type="string", example="Contenu mis à jour de la newsletter.")
      *         )
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Newsletter mise à jour avec succès",
+     *         description="Newsletter successfully updated",
      *         @OA\JsonContent(ref="#/components/schemas/Newsletter")
      *     )
      * )
@@ -139,18 +138,17 @@ class NewsletterController extends Controller
      * @OA\Delete(
      *     path="/newsletters/{id}",
      *     tags={"Newsletters"},
-     *     summary="Supprimer une newsletter",
-     *     description="Supprime une newsletter en utilisant son ID",
+     *     summary="Delete a newsletter",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID de la newsletter à supprimer",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Newsletter supprimée avec succès"
+     *         description="Newsletter successfully deleted"
      *     )
      * )
      */
