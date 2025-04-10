@@ -4,6 +4,7 @@
         "title": "MailMaster API",
         "description": "API de gestion de campagnes de newsletters",
         "contact": {
+            "name": "API Support",
             "email": "support@mailmaster.local"
         },
         "license": {
@@ -14,8 +15,8 @@
     },
     "servers": [
         {
-            "url": "http://my-default-host.com",
-            "description": "Serveur local"
+            "url": "/api",
+            "description": "MailMaster API Server"
         }
     ],
     "paths": {
@@ -672,31 +673,31 @@
     },
     "components": {
         "schemas": {
-            "Newsletter": {
+            "User": {
                 "required": [
-                    "title",
-                    "content"
+                    "name",
+                    "email",
+                    "role"
                 ],
                 "properties": {
                     "id": {
-                        "description": "The unique identifier for the newsletter",
+                        "description": "User ID",
                         "type": "integer"
                     },
-                    "title": {
-                        "description": "The title of the newsletter",
+                    "name": {
+                        "description": "User name",
                         "type": "string"
                     },
-                    "content": {
-                        "description": "The content of the newsletter",
+                    "email": {
+                        "description": "User email",
+                        "type": "string"
+                    },
+                    "role": {
+                        "description": "User role (admin, client, agent)",
                         "type": "string"
                     },
                     "created_at": {
-                        "description": "Timestamp when the newsletter was created",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "description": "Timestamp when the newsletter was last updated",
+                        "description": "Creation date",
                         "type": "string",
                         "format": "date-time"
                     }
@@ -705,28 +706,50 @@
             },
             "Subscriber": {
                 "required": [
-                    "email"
+                    "email",
+                    "name"
                 ],
                 "properties": {
                     "id": {
-                        "description": "The unique identifier for the subscriber",
+                        "description": "Subscriber ID",
                         "type": "integer"
                     },
                     "email": {
-                        "description": "The email of the subscriber",
+                        "description": "Subscriber email",
                         "type": "string"
                     },
                     "name": {
-                        "description": "The name of the subscriber",
+                        "description": "Subscriber name",
                         "type": "string"
                     },
                     "created_at": {
-                        "description": "Timestamp when the subscriber was added",
+                        "description": "Creation date",
                         "type": "string",
                         "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Newsletter": {
+                "required": [
+                    "title",
+                    "content"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Newsletter ID",
+                        "type": "integer"
                     },
-                    "updated_at": {
-                        "description": "Timestamp when the subscriber was last updated",
+                    "title": {
+                        "description": "Newsletter title",
+                        "type": "string"
+                    },
+                    "content": {
+                        "description": "Newsletter content",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Creation date",
                         "type": "string",
                         "format": "date-time"
                     }
@@ -735,54 +758,66 @@
             },
             "Campaign": {
                 "required": [
-                    "newsletter_id",
-                    "scheduled_at"
+                    "name",
+                    "start_date",
+                    "end_date"
                 ],
                 "properties": {
                     "id": {
-                        "description": "The unique identifier for the campaign",
+                        "description": "Campaign ID",
                         "type": "integer"
                     },
-                    "newsletter_id": {
-                        "description": "The ID of the associated newsletter",
-                        "type": "integer"
+                    "name": {
+                        "description": "Campaign name",
+                        "type": "string"
                     },
-                    "scheduled_at": {
-                        "description": "The scheduled time for the campaign",
+                    "start_date": {
+                        "description": "Campaign start date",
                         "type": "string",
                         "format": "date-time"
+                    },
+                    "end_date": {
+                        "description": "Campaign end date",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "status": {
+                        "description": "Campaign status (active, completed, etc.)",
+                        "type": "string"
                     },
                     "created_at": {
-                        "description": "Timestamp when the campaign was created",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "description": "Timestamp when the campaign was last updated",
+                        "description": "Creation date",
                         "type": "string",
                         "format": "date-time"
                     }
                 },
                 "type": "object"
             }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
         }
     },
     "tags": [
         {
             "name": "Authentication",
-            "description": "API endpoints for user authentication"
+            "description": "API Endpoints for user authentication"
         },
         {
             "name": "Campaigns",
-            "description": "Gestion des campagnes"
-        },
-        {
-            "name": "Newsletters",
-            "description": "Gestion des newsletters"
+            "description": "API Endpoints for managing campaigns"
         },
         {
             "name": "Subscribers",
             "description": "Gestion des abonnés"
+        },
+        {
+            "name": "Newsletters",
+            "description": "Gestion des newsletters"
         }
     ]
 }
