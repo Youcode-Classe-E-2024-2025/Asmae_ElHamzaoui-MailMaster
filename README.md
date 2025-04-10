@@ -1,6 +1,6 @@
-# Asmae_ElHamzaoui-CustomerCareAPI-
+# Asmae_ElHamzaoui-MailMaster
 
-# API de Gestion du Service Client
+# API avancée de gestion de newsletters
 
 
 ## Contexte du projet
