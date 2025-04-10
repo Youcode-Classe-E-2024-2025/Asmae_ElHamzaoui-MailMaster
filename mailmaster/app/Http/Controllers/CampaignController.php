@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Services\CampaignService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Tag(
  *     name="Campaigns",
- *     description="Gestion des campagnes"
+ *     description="API Endpoints for campaign management"
  * )
  */
 class CampaignController extends Controller
@@ -25,16 +26,9 @@ class CampaignController extends Controller
      * @OA\Get(
      *     path="/campaigns",
      *     tags={"Campaigns"},
-     *     summary="Liste des campagnes",
-     *     description="Récupère toutes les campagnes existantes",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Liste récupérée avec succès",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Campaign")
-     *         )
-     *     )
+     *     summary="Get all campaigns",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response=200, description="List of all campaigns")
      * )
      */
     public function index()
@@ -46,8 +40,8 @@ class CampaignController extends Controller
      * @OA\Post(
      *     path="/campaigns",
      *     tags={"Campaigns"},
-     *     summary="Créer une nouvelle campagne",
-     *     description="Crée une nouvelle campagne en associant une newsletter et une date d'envoi programmée",
+     *     summary="Create a new campaign",
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -56,11 +50,7 @@ class CampaignController extends Controller
      *             @OA\Property(property="scheduled_at", type="string", format="date-time", example="2025-04-10T12:00:00")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Campagne créée avec succès",
-     *         @OA\JsonContent(ref="#/components/schemas/Campaign")
-     *     )
+     *     @OA\Response(response=201, description="Campaign successfully created")
      * )
      */
     public function store(Request $request)
@@ -77,20 +67,15 @@ class CampaignController extends Controller
      * @OA\Get(
      *     path="/campaigns/{id}",
      *     tags={"Campaigns"},
-     *     summary="Voir une campagne",
-     *     description="Récupère les détails d'une campagne spécifique",
+     *     summary="Get a specific campaign",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID de la campagne",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Détails de la campagne récupérés avec succès",
-     *         @OA\JsonContent(ref="#/components/schemas/Campaign")
-     *     )
+     *     @OA\Response(response=200, description="Campaign details")
      * )
      */
     public function show($id)
@@ -102,27 +87,22 @@ class CampaignController extends Controller
      * @OA\Put(
      *     path="/campaigns/{id}",
      *     tags={"Campaigns"},
-     *     summary="Mettre à jour une campagne",
-     *     description="Met à jour les informations d'une campagne existante",
+     *     summary="Update a specific campaign",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID de la campagne à mettre à jour",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\RequestBody(
-     *         required=false,
+     *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="newsletter_id", type="integer", example=1),
-     *             @OA\Property(property="scheduled_at", type="string", format="date-time", example="2025-04-15T12:00:00")
+     *             @OA\Property(property="newsletter_id", type="integer", example=2),
+     *             @OA\Property(property="scheduled_at", type="string", format="date-time", example="2025-04-15T09:30:00")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Campagne mise à jour avec succès",
-     *         @OA\JsonContent(ref="#/components/schemas/Campaign")
-     *     )
+     *     @OA\Response(response=200, description="Campaign successfully updated")
      * )
      */
     public function update(Request $request, $id)
@@ -139,19 +119,15 @@ class CampaignController extends Controller
      * @OA\Delete(
      *     path="/campaigns/{id}",
      *     tags={"Campaigns"},
-     *     summary="Supprimer une campagne",
-     *     description="Supprime une campagne en utilisant son ID",
+     *     summary="Delete a specific campaign",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID de la campagne à supprimer",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Campagne supprimée avec succès"
-     *     )
+     *     @OA\Response(response=200, description="Campaign successfully deleted")
      * )
      */
     public function destroy($id)
